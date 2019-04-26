@@ -6,10 +6,11 @@ class NegociacaoController {
         this._inputData = $('#data');
         this._inputQuantidade = $('#quantidade');
         this._inputValor = $('#valor');
+        this._form = $(".form");
     }
     
-    adiciona(event) {
-        
+    adiciona(event) 
+    {   
         event.preventDefault();
 
         // Inseri -> 22-04-2019
@@ -53,18 +54,6 @@ class NegociacaoController {
 
         */    
 
-        /* 
-           Callback é a função cujo retorno produz o novo elemento do array que será retornado no final e essa função recebe três argumentos
-           Com este spread operator (...), indicamos que o array será desmembrado - e o primeiro item do array, e cada parâmetro do Date será posicionado na mesma ordem no construtor.
-           Porém, temos que encontrar uma forma de, antes de reposicionarmos cada parâmetro para o constructor, decrementarmos 1 do valor do mês.
-
-           ..
-
-           Functional approching: 1 mod 2 = 1 (Remainder). 
-            "10" - 2 -> No map é feita uma subtração que faz conversão explícita de String para Number.
-
-            Arrow functions: Com isso eliminamos a palavra function e adicionamos => (que representa uma flecha).
-        */
        let data = new Date(...this._inputData.value.split('-').map((item, index) => item - index % 2));
 
         let negociacao = new Negociacao 
@@ -74,6 +63,18 @@ class NegociacaoController {
             this._inputValor.value
         );
 
-        console.log(negociacao);
+        let diaMesAno = negociacao.data.getDate() 
+        + '/' + (negociacao.data.getMonth() + 1) 
+        + '/' + negociacao.data.getFullYear();
+  
+        console.log(negociacao.data.getMonth());
+
+        this.limpaFormulario();
+    }
+
+    limpaFormulario()
+    {
+        this._form.reset();
+        this._inputData.focus();
     }
 }
