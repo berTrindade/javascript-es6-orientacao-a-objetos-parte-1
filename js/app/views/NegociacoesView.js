@@ -18,25 +18,34 @@ class NegociacaoView
                     </thead>
                     
                     <tbody>
+        
                         ${modelo.negociacoes.map(negociacao => 
-                            {
-                                /*
-                                 * O forEach() itera pelos itens de um array, o map() itera fazendo alguma transformação e retorna um novo array.
-                                 * map() returns an array
-                                 * Sem o join, o array será convertido para string usando vírgula como separador. As vírgulas aparecem no canto esquerdo logo acima da tabela.
-                                 * No join(), utilizamos o mesmo com parâmetros vazio, pois senão utilizamos, o seu padrão é realizar o uso do critério de separação dos itens da string a vírgula.
-                                 * Com join(''), você esta criando uma única String com cada item sem separador. É essa string que é usada na interpolação.
-                                */
-                                return `<tr>
-                                            <td>${DateHelper.dataParaTexto(negociacao.data)}</td>
-                                            <td>${negociacao.quantidade}</td>
-                                            <td>${negociacao.valor}</td>
-                                            <td>${negociacao.volume}</td>
-                                        </tr>`
-                            }).join('')}
+                            // Quando trabalhamos com um único retorno, não precisamos usar as chaves ({}). Também podemos remover o return.
+                            `<tr>
+                                <td>${DateHelper.dataParaTexto(negociacao.data)}</td>
+                                <td>${negociacao.quantidade}</td>
+                                <td>${negociacao.valor}</td>
+                                <td>${negociacao.volume}</td>
+                            </tr>`).join('')}
                     </tbody>
                     
                     <tfoot>
+                        <tr>
+                            <td colspan = "3"></td>
+                            <td>${
+                                /* Dentro da expressão ${}, precisamos retornar um valor. 
+                                 * Só que quando usamos uma instrução, não podemos adicionar uma sequência de instruções. 
+                                 * Seremos espertos e adicionaremos uma função dentro do $. Utilizaremos uma Immediately-invoked function expression (IIFE) ou a função imediata. Trata-se de um recurso usado na criação de escopo em JavaScript, que nos ajudará a colocar um bloco na expressão, sendo executado imediatamente. No caso, o $ receberá o total.
+                                */
+                                (function()
+                                {
+                                    let total = 0;
+
+                                    modelo.negociacoes.forEach(negociacao => total += negociacao.volume);
+                                    return total;
+                                })()
+                            }</td>
+                        </tr>
                     </tfoot>
                 </table>`;      
     }
