@@ -1,10 +1,17 @@
 class DateHelper
 {
-    dataParaTexto(data)
+    constructor()
     {
-        return data.getDate() 
-        + '/' + (data.getMonth() + 1) 
-        + '/' + data.getFullYear();
+        throw new Error("Esta classe não pode ser instanciada!");
+    }
+
+    static dataParaTexto(data)
+    {
+        /* return data.getDate() + '/' + (data.getMonth() + 1) + '/' + data.getFullYear();
+           O exemplo abaixo representa a utilização do String Templates
+           (´`) - backtick (crases)
+        */
+        return `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()}`;
     } 
 
     /* 
@@ -19,8 +26,22 @@ class DateHelper
 
         Arrow functions: Com isso eliminamos a palavra function e adicionamos => (que representa uma flecha).
     */
-    textoParaData(texto)
+    static textoParaData(texto)
     {
+        /* O método textoParaData deve receber o ano-mês-dia. 
+           Nós já vamos validar na variável 'texto' se passamos uma string no padrão estabelecido, exibindo uma mensagem caso o padrão não seja exibido. 
+           Faremos algo denominado 'fail-fast'.
+
+           Os valores 4, 2 e 2 sinalizam que os números terão tais quantidade de dígitos, respectivamente. Com test, pedimos que a expressão teste se o texto segue o padrão.
+        */
+        if(!/^\d{4}-\d{2}-\d{2}$/.test(texto)) 
+            throw new Error("Deve estar no formato aaaa-mm-dd");
+        
         return new Date(...texto.split('-').map((item, index) => item - index % 2));
     }
+
+    /* Métodos Estáticos:
+        Caso a sua Classe não possua nenhum atributo você pode deixar todos os seus métodos estáticos pois não haverá o que ser alterado, logo não precisara de instancia. Assim você só usa os métodos que precisa da classe e pronto.
+        Mas se sua Classe tiver atributos você não poderá ter somente métodos estáticos pois eles não acessam os atributos do objeto e não será possivel alterar esses atributos caso queira após a instancia. 
+    */
 }
