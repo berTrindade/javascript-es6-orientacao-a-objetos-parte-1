@@ -15,4 +15,6 @@ class ListaNegociacoes
         // Defensive programming to prevent something like this._listaNegociacoes.negociacoes.push(this._criaNegociacao); to be called in the 'NegociacaoController.js'
         return [].concat(this._negociacoes);
     }
+
+    get 
 }

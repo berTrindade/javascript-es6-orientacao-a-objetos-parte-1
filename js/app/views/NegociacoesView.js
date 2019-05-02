@@ -20,7 +20,9 @@ class NegociacaoView
                     <tbody>
         
                         ${modelo.negociacoes.map(negociacao => 
-                            // Quando trabalhamos com um único retorno, não precisamos usar as chaves ({}). Também podemos remover o return.
+                            /* Quando trabalhamos com um único retorno, não precisamos usar as chaves ({}). Também podemos remover o return.
+                             * Use reduce() quando: é preciso encontrar um valor cumulativo ou concatenado com base em elementos de todo o array. URL: https://desenvolvimentoparaweb.com/javascript/map-filter-reduce-javascript/
+                            */
                             `<tr>
                                 <td>${DateHelper.dataParaTexto(negociacao.data)}</td>
                                 <td>${negociacao.quantidade}</td>
@@ -32,19 +34,7 @@ class NegociacaoView
                     <tfoot>
                         <tr>
                             <td colspan = "3"></td>
-                            <td>${
-                                /* Dentro da expressão ${}, precisamos retornar um valor. 
-                                 * Só que quando usamos uma instrução, não podemos adicionar uma sequência de instruções. 
-                                 * Seremos espertos e adicionaremos uma função dentro do $. Utilizaremos uma Immediately-invoked function expression (IIFE) ou a função imediata. Trata-se de um recurso usado na criação de escopo em JavaScript, que nos ajudará a colocar um bloco na expressão, sendo executado imediatamente. No caso, o $ receberá o total.
-                                */
-                                (function()
-                                {
-                                    let total = 0;
-
-                                    modelo.negociacoes.forEach(negociacao => total += negociacao.volume);
-                                    return total;
-                                })()
-                            }</td>
+                            <td>${modelo.negociacoes.reduce((total, negocicao) => total += negocicao.volume, 0.0)}</td>
                         </tr>
                     </tfoot>
                 </table>`;      
