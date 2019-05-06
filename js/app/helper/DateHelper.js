@@ -1,5 +1,10 @@
 class DateHelper
 {
+    dataParaTexto(data)
+    {
+        return data.getDate() + '/' + (data.getMonth() + 1) + '/' + data.getFullYear();
+    }
+    
     /* 
         Callback é a função cujo retorno produz o novo elemento do array que será retornado no final e essa função recebe três argumentos
         Com este spread operator (...), indicamos que o array será desmembrado - e o primeiro item do array, e cada parâmetro do Date será posicionado na mesma ordem no construtor.
@@ -14,13 +19,6 @@ class DateHelper
     */
     textoParaData(texto)
     {
-        return new Date(texto.value.split('-').map((item, index) => item - index % 2));
-    }
-
-    dataParaTexto(data)
-    {
-        return data.getDate() 
-        + '/' + (data.getMonth() + 1) 
-        + '/' + data.getFullYear();
+        return new Date(texto.split('-').map((item, index) => item - index % 2));
     }
 }
