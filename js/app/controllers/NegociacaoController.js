@@ -7,44 +7,56 @@ class NegociacaoController {
         this._inputQuantidade = $('#quantidade');
         this._inputValor = $('#valor');
         this._form = $(".form");
+        this._listaNegociacoes = new ListaNegociacoes();
+
+        this._negociacoesView = new NegociacaoView($('#negociacoesView'));
+        this._negociacoesView.update(this._listaNegociacoes);
+
+        // Colocaremos a View assim que a página for recarregada
+        this._mensagem = new Mensagem();
+
+        /*
+         * O MensagemView recebeu onde queremos incluir a mensagem no HTML. Ou seja, no parágrafo <p> que criamos no nosso HTML.
+         * Pegamos o elemento do DOM no NegociacaoController.js, adicionando o $
+         * Usamos o update e dentro passamos o this._mensagem
+        */
+        this._mensagemView = new MensagemView($('#mensagemView'));
+        this._mensagemView.update(this._mensagem);
     }
     
     adiciona(event) 
     {   
         event.preventDefault();
 
-       let dataHelper = new DateHelper();
+        this._listaNegociacoes.adiciona(this._criaNegociacao());
+        this._negociacoesView.update(this._listaNegociacoes);
 
-       //let data = dataHelper.textoParaData(this._inputData.value);
+        // Adicionando a mensagem após inclusão de negociação
+        this._mensagem.texto = 'Negociacao adicionada com sucesso';
+        this._mensagemView.update(this._mensagem);
 
-       console.log(this._inputData.value);
+        this._limpaFormulario();
 
-       let data = new Date(this._inputData.value.split('-').map(
-           (item, index) => item - index % 2)
+        console.log(this._listaNegociacoes.negociacoes);
+    }
 
-            console.log(item);
+    _criaNegociacao()
+    {
+        let data = DateHelper.textoParaData(this._inputData.value);
 
-           );
-
-        console.log(data.getMonth());
-
-        let negociacao = new Negociacao 
+        return new Negociacao 
         (
             data,
             this._inputQuantidade.value,
             this._inputValor.value
         );
-
-        let date = negociacao.data.getDate() + '/' + (negociacao.data.getMonth() + 1) + '/' + negociacao.data.getFullYear();
- 
-        console.log(negociacao.data);
-
-        this.limpaFormulario();
     }
 
-    limpaFormulario()
+    _limpaFormulario()
     {
-        this._form.reset();
+        this._inputData.value = "";
+        this._inputQuantidade.value = 1;
+        this._inputValor.value = 0.0;
         this._inputData.focus();
     }
 }
